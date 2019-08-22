@@ -33,7 +33,7 @@ def func_str_to_list(line):
     return list
 
 
-t = 'C:\Personal_File\DiskF\GSK_Intern_Oracle\Tem_file\SQL_TEM_3.xlsx'
+t = 'root'
 df = pd.read_excel(t, sheet_name="Sheet1")
 row_num, column_num = df.shape
 print_time()
