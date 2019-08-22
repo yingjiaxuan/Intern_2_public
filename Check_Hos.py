@@ -10,8 +10,8 @@ def print_time ():
 
 time_1 = time.time()
 
-t = 'C:\Personal_File\DiskF\GSK_Intern_Oracle\Tem_file\SQL_TEM_1.xlsx'
-t_2 = 'C:\Personal_File\DiskF\GSK_Intern_Oracle\Tem_file\SQL_TEM_3.xlsx'
+t = 'root'
+t_2 = 'root_2'
 df = pd.read_excel(t, sheet_name="Sheet1")
 
 print_time()
