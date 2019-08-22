@@ -23,7 +23,8 @@ GSK_Intern_2,共计四个文档，以下将分别叙述
 
 - 运行本程序必须安装的模块有：cx_Oracle，xlsxwriter，pandas，time，json，urllib.request，geopy.distance等
 - geopy**仅支持python3**
-- **为了获得好的效果和速度，建议通过[**requirements.txt**](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/requirements.txt)文件完成环境匹配**
+- **为了获得好的效果和速度，建议通过[**requirements.txt**]
+(https://github.com/yingjiaxuan/Intern_2_public/blob/master/requirements.txt)文件完成环境匹配**
 
     
 
