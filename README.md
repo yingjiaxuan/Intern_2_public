@@ -284,7 +284,7 @@ def fun_Check_Num(t_1, t_2):
 不建议修改除文件路径，ak以外的任何内容，以免造成不可估计的逻辑错误
 
 ## 文件说明
-1. [Check_Hos.py](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/Check_Hos.py)
+1. [Check_Hos.py](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Check_Hos.py)
 根据视图生成对应Excel文档（具有生成耦合）
 2. [Create_View.py](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/Create_view.py)
 根据生成的Excel文档添加额外的信度列（此处开始只与前者生成的文档具有耦合，与原数据已脱钩）
