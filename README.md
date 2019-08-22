@@ -93,7 +93,7 @@ SELECT source.hcp_name,reference.province,reference.city,source.hco_name,referen
     order by source.hcp_name;
 ```
 
-### 二、代码解析——基于文件[Create_view.py](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/Create_view.py),[Check_Hos.py](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/Check_Hos.py),[Fun_3](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/Fun_3.py),[Folium.py](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/Folium.py)
+### 二、代码解析——基于文件[Create_view.py](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Create_view.py),[Check_Hos.py](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Check_Hos.py),[Fun_3](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Fun_3.py),[Folium.py](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Folium.py)
 以下代码示例适用于python交互式环境及pycharm编译器。
 
 #### 1.生成视图映射表（Create_view.py 36-47行）
@@ -108,7 +108,7 @@ sql = "select * from v4" # 具体视图名称
 sql_list = get_sql_list(user_name,password,dsn_tst,sql)
 
 # ***********************写入文件模块*******************************
-workbook_goal = xlsxwriter.Workbook('C:\Personal_File\DiskF\GSK_Intern_Oracle\Tem_file\SQL_TEM_1.xlsx')
+workbook_goal = xlsxwriter.Workbook('root')
 worksheet = workbook_goal.add_worksheet()
 ```
 #### 2.基于映射表添加信度标签行（Check_Hos.py）
@@ -132,7 +132,7 @@ print('Finish_Processing')
 
 进行简单逻辑匹配——完全一致，包含关系，“第x医院”逻辑匹配，返回值参考上文
 
-由于逻辑相对简单，此处不放完整子方法代码，需要的可以点击[链接](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/Fun_3.py)查看，或参考后文[其余方法说明](#其余方法说明)
+由于逻辑相对简单，此处不放完整子方法代码，需要的可以点击[链接](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Fun_3.py)查看，或参考后文[其余方法说明](#其余方法说明)
 ```python
 def fun_Simple_Processor(t_1, t_2):
     t_1 = func_Delete_Comma(t_1) 
@@ -191,7 +191,7 @@ def fun_Coordinate_Processor(t_1,t_2):
 ```
 #### 4.生成匹配成功数据源可视化地图（Folium.py）
 
-使用时，修改源文件路径，其余均不需要修改，生成文件可参考[**df.html**](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/df.html)
+使用时，修改源文件路径，其余均不需要修改，生成文件可参考[**df.html**](https://github.com/yingjiaxuan/Intern_2_public/blob/master/df.html)
 ```python
 import pandas as pd
 import cpca
@@ -277,28 +277,28 @@ def fun_Check_Num(t_1, t_2):
 
 ## Oracle写回、改进及维护
 ### 1. Oracle写回
-考虑到[样例输出](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/Output_Demo.xlsx)尚需要对精度做出讨论，暂未实现Oracle写回脚本，暂定利用Dual虚表进行批量写回
+考虑到[样例输出](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Output_Demo.xlsx)尚需要对精度做出讨论，暂未实现Oracle写回脚本，暂定利用Dual虚表进行批量写回
 ### 2. 改进
-针对[Fun_3.py](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/Fun_3.py)中的坐标判断，仍可以通过规定距离值，设置梯度信度作二次校验等方法进一步提高匹配准确率
+针对[Fun_3.py](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Fun_3.py)中的坐标判断，仍可以通过规定距离值，设置梯度信度作二次校验等方法进一步提高匹配准确率
 ### 3. 维护
 不建议修改除文件路径，ak以外的任何内容，以免造成不可估计的逻辑错误
 
 ## 文件说明
 1. [Check_Hos.py](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Check_Hos.py)
 根据视图生成对应Excel文档（具有生成耦合）
-2. [Create_View.py](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/Create_view.py)
+2. [Create_View.py](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Create_view.py)
 根据生成的Excel文档添加额外的信度列（此处开始只与前者生成的文档具有耦合，与原数据已脱钩）
-3. [Fun_3.py](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/Fun_3.py)
+3. [Fun_3.py](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Fun_3.py)
 字符串匹配处理主方法
-4. [Folium.py](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/Folium.py)
+4. [Folium.py](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Folium.py)
 根据匹配结果生成匹配热点图
-5. [SQL_TEM_1.xlsx](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/SQL_TEM_1.xlsx)
+5. [SQL_TEM_1.xlsx](https://github.com/yingjiaxuan/Intern_2_public/blob/master/SQL_TEM_1.xlsx)
 对应视图生成的Excel文档
-6. [Output_Demo.xlsx](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/Output_Demo.xlsx)
+6. [Output_Demo.xlsx](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Output_Demo.xlsx)
 生成完毕信度标签的Excel文档
-7. [df.html](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/df.html)
+7. [df.html](https://github.com/yingjiaxuan/Intern_2_public/blob/master/df.html)
 生成的匹配热点图
-8. [requirements.txt](https://github.com/yingjiaxuan/GSK_Intern_Module_2/blob/master/requirements.txt)
+8. [requirements.txt](https://github.com/yingjiaxuan/Intern_2_public/blob/master/requirements.txt)
 环境配置文件
 
 ## 写在最后
