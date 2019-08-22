@@ -84,12 +84,10 @@ GSK_Intern_2,共计四个文档，以下将分别叙述
 ### 一、入口参数获取——来源于Oracle数据库
 根据数据源创建视图——名字相同，省市除后缀（省、市）以外相同，即问题最终聚焦在医院是否为同一所
 ```sql
-CREATE VIEW v4(SOURCE_NAME,reference_province,reference_city,source_hospital,REFERENCE_HOSPITAL) AS
-SELECT source.hcp_name,reference.province,reference.city,source.hco_name,reference.name
+CREATE VIEW v4(HCP_NAME,DATA_SOURCE,HCP_ID_SOURCE,HCP_ID_TARGET,PROVINCE,CITY,HCO_NAME_SOURCE,HCO_NAME_TARGET,HCO_ID_TARGET) AS
+SELECT source.hcp_name,source.DATA_SOURCE,source.hcp_code,reference.VEEVA_HCP_ID,reference.province,reference.city,source.hco_name,reference.name,reference.VEEVA_HCO_ID
     FROM source,reference 
-    where reference.hcp_name = source.hcp_name 
-    and instr(source.province_name,reference.province)>0 
-    and instr(source.city_name,reference.city)>0 
+    where reference.hcp_name = source.hcp_name and instr(source.province_name,reference.province)>0 and instr(source.city_name,reference.city)>0 
     order by source.hcp_name;
 ```
 
