@@ -44,7 +44,7 @@ sql = "select * from v4" # 具体视图名称
 sql_list = get_sql_list(user_name,password,dsn_tst,sql)
 
 # ***********************写入文件模块*******************************
-workbook_goal = xlsxwriter.Workbook('C:\Personal_File\DiskF\GSK_Intern_Oracle\Tem_file\SQL_TEM_1.xlsx')
+workbook_goal = xlsxwriter.Workbook('root')
 worksheet = workbook_goal.add_worksheet()
 worksheet.set_column('A:A', 20)
 worksheet.set_column('B:B', 20)
