@@ -65,7 +65,7 @@ def getlnglat(address):
     with eventlet.Timeout(2, False):
         url = 'http://api.map.baidu.com/geocoding/v3/'
         output = 'json'
-        ak = 'UL71V0mIMUCRYWj24HQFqUgHoY67mdQ5'  # 应用时改为企业ak，其余都不需要修改
+        ak = 'ak'  # 应用时改为企业ak，其余都不需要修改
         add = quote(address)  # 由于本文城市变量为中文，为防止乱码，先用quote进行编码
         uri = url + '?' + 'address=' + add + '&output=' + output + '&ak=' + ak
         req = urlopen(uri)
@@ -116,7 +116,7 @@ def fun_Simple_Processor(t_1, t_2):
     return 0
 
 
-t = 'C:\Personal_File\DiskF\GSK_Intern_Oracle\Tem_file\SQL_FINAL_2.xlsx'
+t = 'Source_root'
 df = pd.read_excel(t, sheet_name="Sheet1")
 row_num, column_num = df.shape
 print_time()
@@ -143,7 +143,7 @@ for row_loop in range(row_num):  # 0代表无法入逻辑，1代表完全匹配�
 
 # ***************************所有操作写在上面****************************
 print_time()
-t = 'C:\Personal_File\DiskF\GSK_Intern_Oracle\Tem_file\SQL_FINAL_3.xlsx'
+t = 'Goal_root'
 df.to_excel(t, sheet_name='Sheet1', index=False, header=True)
 print_time()
 
