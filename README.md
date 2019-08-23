@@ -284,6 +284,8 @@ def fun_Check_Num(t_1, t_2):
 ## Oracle写回、改进及维护
 ### 1. Oracle写回
 考虑到[样例输出](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Output_Demo.xlsx)尚需要对精度做出讨论，暂未实现Oracle写回脚本，暂定利用Dual虚表进行批量写回
+
+由于调用api进行判定，存在网络延迟等原因导致无返回值，此时标注信度为404，应当后续重新执行
 ### 2. 改进
 针对[Fun_3.py](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Fun_3.py)中的坐标判断，仍可以通过规定距离值，设置梯度信度作二次校验等方法进一步提高匹配准确率
 ### 3. 维护
