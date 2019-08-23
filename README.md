@@ -160,16 +160,23 @@ from urllib.request import urlopen, quote
 from geopy.distance import geodesic
 import json
 def getlnglat(address):
-    url = 'http://api.map.baidu.com/geocoding/v3/'
-    output = 'json'
-    ak = 'ak'  # 应用时改为企业ak，其余都不需要修改
-    add = quote(address)  # 由于本文城市变量为中文，为防止乱码，先用quote进行编码
-    uri = url + '?' + 'address=' + add + '&output=' + output + '&ak=' + ak
-    req = urlopen(uri)
-    res = req.read().decode()  # 将其他编码的字符串解码成unicode
-    temp = json.loads(res)  # 对json数据进行解析
+    flag = 0
+    eventlet.monkey_patch() # 必须加这一句
+    with eventlet.Timeout(2, False):
+        url = 'http://api.map.baidu.com/geocoding/v3/'
+        output = 'json'
+        ak = 'ak'  # 应用时改为企业ak，其余都不需要修改
+        add = quote(address)  # 由于本文城市变量为中文，为防止乱码，先用quote进行编码
+        uri = url + '?' + 'address=' + add + '&output=' + output + '&ak=' + ak
+        req = urlopen(uri)
+        res = req.read().decode()  # 将其他编码的字符串解码成unicode
+        temp = json.loads(res)  # 对json数据进行解析
+        # time.sleep(4) # 时停测试
+        flag = 1
+    if flag != 1:
+        return 0,0
     if temp['status'] != 0:
-        return temp['status'],None
+        return temp['status'], None
     lng = temp['result']['location']['lng']
     lat = temp['result']['location']['lat']  # 纬度——latitude,经度——longitude
     return lat, lng
