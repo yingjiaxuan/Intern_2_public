@@ -2,6 +2,7 @@ import pandas as pd
 import time
 import re
 import json
+import eventlet
 from urllib.request import urlopen, quote
 from geopy.distance import geodesic
 
@@ -33,12 +34,6 @@ def func_str_to_list(line):
     return list
 
 
-t = 'root'
-df = pd.read_excel(t, sheet_name="Sheet1")
-row_num, column_num = df.shape
-print_time()
-
-
 # ***************************所有操作写在下面****************************
 # list转换为set进行子集分析
 def fun_Set_Processor(list_1, list_2):
@@ -51,6 +46,7 @@ def fun_Set_Processor(list_1, list_2):
     return B <= A
 
 
+# 匹配“第x”逻辑
 def fun_Check_Num(t_1, t_2):
     n_1 = re.search(r'第[一二三四五六七八九]', t_1)
     n_2 = re.search(r'第[一二三四五六七八九]', t_2)
@@ -62,15 +58,23 @@ def fun_Check_Num(t_1, t_2):
         return False
 
 
+# 调用api返回经纬度
 def getlnglat(address):
-    url = 'http://api.map.baidu.com/geocoding/v3/'
-    output = 'json'
-    ak = 'ak'  # 应用时改为企业ak，其余都不需要修改
-    add = quote(address)  # 由于本文城市变量为中文，为防止乱码，先用quote进行编码
-    uri = url + '?' + 'address=' + add + '&output=' + output + '&ak=' + ak
-    req = urlopen(uri)
-    res = req.read().decode()  # 将其他编码的字符串解码成unicode
-    temp = json.loads(res)  # 对json数据进行解析
+    flag = 0
+    eventlet.monkey_patch() # 必须加这一句
+    with eventlet.Timeout(2, False):
+        url = 'http://api.map.baidu.com/geocoding/v3/'
+        output = 'json'
+        ak = 'UL71V0mIMUCRYWj24HQFqUgHoY67mdQ5'  # 应用时改为企业ak，其余都不需要修改
+        add = quote(address)  # 由于本文城市变量为中文，为防止乱码，先用quote进行编码
+        uri = url + '?' + 'address=' + add + '&output=' + output + '&ak=' + ak
+        req = urlopen(uri)
+        res = req.read().decode()  # 将其他编码的字符串解码成unicode
+        temp = json.loads(res)  # 对json数据进行解析
+        # time.sleep(4) # 时停测试
+        flag = 1
+    if flag != 1:
+        return 0,0
     if temp['status'] != 0:
         return temp['status'], None
     lng = temp['result']['location']['lng']
@@ -78,25 +82,20 @@ def getlnglat(address):
     return lat, lng
 
 
+# 计算球面距离并同信度一并返回
 def fun_Coordinate_Processor(t_1, t_2):
     tuple_1 = getlnglat(t_1)
     tuple_2 = getlnglat(t_2)
     if tuple_1[1] == None or tuple_2[1] == None:
-        return 0
+        return 0,'Error'
+    if tuple_1 == (0,0) or tuple_2 == (0,0):
+        return 404,'404Error'
     distance = geodesic(tuple_1, tuple_2).km
     if distance > 5:
-        return -2
+        return -2,distance
     else:
-        return 4
+        return 4,distance
 
-
-def fun_Coordinate_Processor_another(t_1, t_2):
-    tuple_1 = getlnglat(t_1)
-    tuple_2 = getlnglat(t_2)
-    if tuple_1[1] == None or tuple_2[1] == None:
-        return 0
-    distance = geodesic(tuple_1, tuple_2).km
-    return distance
 
 
 # 处理字符串主函数1
@@ -117,64 +116,34 @@ def fun_Simple_Processor(t_1, t_2):
     return 0
 
 
-i = 0
-j = 0
-p = 0
-q = 0
-a = 0
-b = 0
-sp = 0
-sp_list = []
+t = 'C:\Personal_File\DiskF\GSK_Intern_Oracle\Tem_file\SQL_FINAL_2.xlsx'
+df = pd.read_excel(t, sheet_name="Sheet1")
+row_num, column_num = df.shape
+print_time()
+
 for row_loop in range(row_num):  # 0代表无法入逻辑，1代表完全匹配，2代表包含关系，3代表“第x”逻辑，4代表坐标判断
-    t_1 = df.loc[row_loop, 'Hos_Source']
-    t_2 = df.loc[row_loop, 'Hos_Preference']
+    t_1 = df.loc[row_loop, 'HCO_NAME_SOURCE']
+    t_2 = df.loc[row_loop, 'HCO_NAME_TARGET']
     tem = fun_Simple_Processor(t_1, t_2)  # 主方法1，简单逻辑处理字符串
+    distance = 'Null'
     if tem == 0:
-        tem = fun_Coordinate_Processor(t_1, t_2)
+        tem,distance = fun_Coordinate_Processor(t_1, t_2)
     df.iloc[row_loop, column_num - 2] = tem  # 写入是瓶颈，要注意尽量减少写入次数
 
-    # ************************统计模块*****************
-    #     if df.iloc[row_loop,5] == 1:
-    #         i = i+1
-    #     if df.iloc[row_loop, 5] == 2:
-    #         j = j+1
-    #     if df.iloc[row_loop,5] == 3:
-    #         p = p+1
-    #     if df.iloc[row_loop,5] == 4:
-    #         a = a+1
-    #     if df.iloc[row_loop,5] == -1:
-    #         q = q+1
-    #     if df.iloc[row_loop,5] == -2:
-    #         b = b+1
-    #     if df.iloc[row_loop,5] == 0:
-    #         sp = sp + 1
-    #         sp_list.append(row_loop)
-    #
-    # print('直接匹配：',i,i/row_num)
-    # print('包含关系（不含第x逻辑）：',j,j/row_num)
-    # print('第x逻辑：',p,p/row_num)
-    # print('百度坐标（球面距离5km以内）：',a,a/row_num)
-    # print('第x逻辑（必不成立）：',q,q/row_num)
-    # print('百度坐标（球面距离5km以外）：',b,b/row_num)
-    # print('特殊情况，未入逻辑：',sp,sp/row_num)
-    # print(sp_list)
-    # ************************统计模块*****************
     # ************************打个补丁*****************
-    # distance = 0
-    # if df.iloc[row_loop, 5] == 4:
-    #     t_1 = df.loc[row_loop, 'Hos_Source']
-    #     t_2 = df.loc[row_loop, 'Hos_Preference']
-    #     distance = fun_Coordinate_Processor_another(t_1, t_2)
-    #     df.iloc[row_loop, 6] = distance
-    #
-    distance = df.iloc[row_loop, 6]
-    print('编号:'+str(row_loop))
-    print('Hos_Source:'+df.iloc[row_loop, 3])
-    print('Hos_Preference:' + df.iloc[row_loop, 4])
-    print('distance: %f' %distance )
+    if df.iloc[row_loop, column_num - 2] == 4 or df.iloc[row_loop, column_num - 2] == -2\
+            or df.iloc[row_loop, column_num - 2] == 404: # 写入距离
+        df.iloc[row_loop, column_num - 1] = distance
+
+
+    print('编号:' + str(row_loop)) #进度可视化
+    print('HCO_NAME_SOURCE:' + df.loc[row_loop, 'HCO_NAME_SOURCE'])
+    print('HCO_NAME_TARGET:' + df.loc[row_loop, 'HCO_NAME_TARGET'])
+    print('Distance: %s' % distance)
 
 # ***************************所有操作写在上面****************************
 print_time()
+t = 'C:\Personal_File\DiskF\GSK_Intern_Oracle\Tem_file\SQL_FINAL_3.xlsx'
 df.to_excel(t, sheet_name='Sheet1', index=False, header=True)
 print_time()
 
