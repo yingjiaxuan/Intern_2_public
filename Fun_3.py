@@ -65,7 +65,7 @@ def getlnglat(address):
     with eventlet.Timeout(2, False):
         url = 'http://api.map.baidu.com/geocoding/v3/'
         output = 'json'
-        ak = 'ak'  # 应用时改为企业ak，其余都不需要修改
+        ak = 'fP9kvD7LTE3qkoYmnVpPv7ScmmUUqnkr'  # 应用时改为企业ak，其余都不需要修改
         add = quote(address)  # 由于本文城市变量为中文，为防止乱码，先用quote进行编码
         uri = url + '?' + 'address=' + add + '&output=' + output + '&ak=' + ak
         req = urlopen(uri)
@@ -115,36 +115,63 @@ def fun_Simple_Processor(t_1, t_2):
         return 2  # 占据40.12%，18467个 ——》添加“第*”判断后，占据25.52%，11748个
     return 0
 
-
-t = 'Source_root'
-df = pd.read_excel(t, sheet_name="Sheet1")
-row_num, column_num = df.shape
-print_time()
-
-for row_loop in range(row_num):  # 0代表无法入逻辑，1代表完全匹配，2代表包含关系，3代表“第x”逻辑，4代表坐标判断
-    t_1 = df.loc[row_loop, 'HCO_NAME_SOURCE']
-    t_2 = df.loc[row_loop, 'HCO_NAME_TARGET']
-    tem = fun_Simple_Processor(t_1, t_2)  # 主方法1，简单逻辑处理字符串
+def fun_Main_Processor(t_1,t_2,Error_list):
+    tem = fun_Simple_Processor(t_1, t_2)
     distance = 'Null'
     if tem == 0:
-        tem,distance = fun_Coordinate_Processor(t_1, t_2)
-    df.iloc[row_loop, column_num - 2] = tem  # 写入是瓶颈，要注意尽量减少写入次数
-
-    # ************************打个补丁*****************
-    if df.iloc[row_loop, column_num - 2] == 4 or df.iloc[row_loop, column_num - 2] == -2\
-            or df.iloc[row_loop, column_num - 2] == 404: # 写入距离
-        df.iloc[row_loop, column_num - 1] = distance
+        tem, distance = fun_Coordinate_Processor(t_1, t_2)
+    if tem == 404:
+        Error_list.append(row_loop)
+    return tem,distance
 
 
-    print('编号:' + str(row_loop)) #进度可视化
-    print('HCO_NAME_SOURCE:' + df.loc[row_loop, 'HCO_NAME_SOURCE'])
-    print('HCO_NAME_TARGET:' + df.loc[row_loop, 'HCO_NAME_TARGET'])
-    print('Distance: %s' % distance)
+if __name__ == '__main__':
+    t = 'C:\Personal_File\DiskF\GSK_Intern_Oracle\Tem_file\SQL_FINAL_2.xlsx'
+    df = pd.read_excel(t, sheet_name="Sheet1")
+    row_num, column_num = df.shape
+    print_time()
 
-# ***************************所有操作写在上面****************************
-print_time()
-t = 'Goal_root'
-df.to_excel(t, sheet_name='Sheet1', index=False, header=True)
-print_time()
+    Error_list = []
+    for row_loop in range(10000):  # 0代表无法入逻辑，1代表完全匹配，2代表包含关系，3代表“第x”逻辑，4代表坐标判断
+        t_1 = df.loc[row_loop, 'HCO_NAME_SOURCE']
+        t_2 = df.loc[row_loop, 'HCO_NAME_TARGET']
+        tem = fun_Simple_Processor(t_1, t_2)  # 主方法1，简单逻辑处理字符串
+        distance = 'Null'
+        if tem == 0:
+            tem,distance = fun_Coordinate_Processor(t_1, t_2)
+        df.iloc[row_loop, column_num - 2] = tem  # 写入是瓶颈，要注意尽量减少写入次数
+        if tem == 404:
+            Error_list.append(row_loop)
+
+        # ************************打个补丁*****************
+        if df.iloc[row_loop, column_num - 2] == 4 or df.iloc[row_loop, column_num - 2] == -2\
+                or df.iloc[row_loop, column_num - 2] == 404: # 写入距离
+            df.iloc[row_loop, column_num - 1] = distance
+
+        print('编号:' + str(row_loop))  # 进度可视化
+        print('HCO_NAME_SOURCE:' + df.loc[row_loop, 'HCO_NAME_SOURCE'])
+        print('HCO_NAME_TARGET:' + df.loc[row_loop, 'HCO_NAME_TARGET'])
+        print('Distance: %s' % distance)
+
+    print (Error_list)
+
+    for list_loop in Error_list: # 补上EOF
+        t_1 = df.loc[list_loop, 'HCO_NAME_SOURCE']
+        t_2 = df.loc[list_loop, 'HCO_NAME_TARGET']
+        tem, distance = fun_Coordinate_Processor(t_1, t_2)
+        df.iloc[list_loop, column_num - 2] = tem
+        df.iloc[list_loop, column_num - 1] = distance
+
+
+        # print('编号:' + str(row_loop)) #进度可视化
+        # print('HCO_NAME_SOURCE:' + df.loc[row_loop, 'HCO_NAME_SOURCE'])
+        # print('HCO_NAME_TARGET:' + df.loc[row_loop, 'HCO_NAME_TARGET'])
+        # print('Distance: %s' % distance)
+
+    # ***************************所有操作写在上面****************************
+    print_time()
+    t = 'C:\Personal_File\DiskF\GSK_Intern_Oracle\Tem_file\SQL_FINAL_3.xlsx'
+    df.to_excel(t, sheet_name='Sheet1', index=False, header=True)
+    print_time()
 
 # pip install C:\ProgramData\Anaconda3\Scripts\geopy-1.20.0-py2.py3-none-any.whl
