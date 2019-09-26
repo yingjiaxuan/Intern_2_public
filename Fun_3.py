@@ -122,7 +122,7 @@ def fun_Main_Processor(t_1,t_2,Error_list):
         tem, distance = fun_Coordinate_Processor(t_1, t_2)
     if tem == 404:
         Error_list.append(row_loop)
-    return tem,distance
+    return tem,distance,Error_list
 
 
 if __name__ == '__main__':
