@@ -3,15 +3,15 @@
 
 ## Table of Contents
 
-* [Main Feature](#Main Feature)
+* [Main Feature](#Main_Feature)
 * [Usage and Execution](#Usage_and_Execution)
 * [Examples and Results](#Examples_and_Results)
 * [File Description](#File_Description)
 * [All in All](#All_in_All)
 
-## Main Feature
+## Main_Feature
 This program performs fuzzy matching for specialized strings—hospital names, involving patterns such as containment relationships, keyword search, and map API matching.
-## Usage and Execution
+## Usage_and_Execution
 - The required modules to run this program are: cx_Oracle, xlsxwriter, pandas, time, json, urllib.request, geopy.distance, etc.
 - geopy only supports Python 3
 - For optimal performance and speed, it is recommended to complete the environment setup through the [**requirements.txt**](https://github.com/yingjiaxuan/Intern_2_public/blob/master/requirements.txt)
@@ -27,7 +27,7 @@ pip install cx_Oracle
 ```
 
 **Note**: The geopy package currently and in the future supports Python 3 versions
-## Examples and Results
+## Examples_and_Results
 1. The following selection of 7 sets of typical raw data showcases the annotated results:
 
 | Hos_Source | Hos_Preference | Reliability |
@@ -58,7 +58,7 @@ pip install cx_Oracle
 [**HeatMap**](https://github.com/yingjiaxuan/Intern_2_public/blob/master/df.html)
 ![img.png](img.png)
 
-## File Description
+## File_Description
 1. [Check_Hos.py](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Check_Hos.py)
 Generate the corresponding Excel document based on the view (with generation coupling).
 2. [Create_View.py](https://github.com/yingjiaxuan/Intern_2_public/blob/master/Create_view.py)
@@ -76,5 +76,5 @@ Generated matching heatmap.
 8. [requirements.txt](https://github.com/yingjiaxuan/Intern_2_public/blob/master/requirements.txt)
 Environment configuration file.
 
-## All in All
+## All_in_All
 If you have any questions or suggestions regarding this program, please feel free to send email to: [*yingjiaxuan123@gmail.com*](link)
