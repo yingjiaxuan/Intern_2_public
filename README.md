@@ -82,7 +82,7 @@ If you want to see readme in English Version, please[**Click**](https://github.c
 
 医疗资源热力图参考如下:
 
-[HeatMap]("https://github.com/yingjiaxuan/Intern_2_public/blob/master/df.html")
+[**HeatMap**](https://github.com/yingjiaxuan/Intern_2_public/blob/master/df.html)
 ![img.png](img.png)
 
 ## 详细入口参数及使用方法
@@ -315,7 +315,7 @@ def fun_Check_Num(t_1, t_2):
 环境配置文件
 
 ## 写在最后
-有任何关于本程序的问题及建议，欢迎将邮件发至：[*yingjiaxuan123@163.com*](link)
+有任何关于本程序的问题及建议，欢迎将邮件发至：[*yingjiaxuan123@gmail.com*](link)
 
 
 
