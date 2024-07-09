@@ -80,6 +80,11 @@ If you want to see readme in English Version, please[**Click**](https://github.c
 |0|字符串在1,2,3匹配均无结果，在4匹配时产生无返回值现象，无法认定|
 |404|网络异常，跳过检验|
 
+医疗资源热力图参考如下:
+
+[HeatMap]("https://github.com/yingjiaxuan/Intern_2_public/blob/master/df.html")
+![img.png](img.png)
+
 ## 详细入口参数及使用方法
 
 ### 一、入口参数获取——来源于Oracle数据库
