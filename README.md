@@ -1,7 +1,7 @@
 # 基于百度地图API的个人信息模糊匹配
 GSK_Intern_2,共计四个文档，以下将分别叙述
 
-
+If you want to see readme in English Version, please[**Click**](https://github.com/yingjiaxuan/Intern_2_public/blob/master/README_EN.md)
 
 
 ## 目录
