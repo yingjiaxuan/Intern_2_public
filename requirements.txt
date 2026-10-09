@@ -2,4 +2,4 @@ pandas==0.24.2
 XlsxWriter==1.1.5
 cpca==0.4.1
 cx_Oracle==7.2.2
-geopy==1.20.0
+geopy==2.5.0
